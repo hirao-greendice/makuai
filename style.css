@@ -143,23 +143,23 @@ button {
 }
 
 .hotspot-no-confirm {
-  --anchor-x: 40%;
+  --anchor-x: 35%;
   --anchor-y: 80%;
-  --anchor-width: 25%;
+  --anchor-width: 30%;
   --anchor-height: 15%;
 }
 
 .hotspot-no-call {
-  --anchor-x: 85%;
-  --anchor-y: 0%;
-  --anchor-width: 15%;
-  --anchor-height: 15%;
+  --anchor-x: 90%;
+  --anchor-y: 10%;
+  --anchor-width: 20%;
+  --anchor-height: 20%;
 }
 
 .hotspot-yes-confirm {
-  --anchor-x: 40%;
+  --anchor-x: 35%;
   --anchor-y: 80%;
-  --anchor-width: 25%;
+  --anchor-width: 30%;
   --anchor-height: 15%;
 }
 
