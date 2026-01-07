@@ -56,7 +56,7 @@ button {
   height: calc(46px * var(--board-scale));
   display: grid;
   place-items: center;
-  background: var(--button-bg);
+  background: #48ff00;
   color: var(--button-text);
   font-size: calc(20px * var(--board-scale));
   font-weight: 600;
