@@ -140,6 +140,13 @@ document.querySelectorAll("[data-judge]").forEach((button) => {
 document.querySelectorAll("[data-screen]").forEach((button) => {
   button.addEventListener("click", () => {
     const mode = button.dataset.screen || "judge";
+    if (mode === "yes") {
+      const row = button.closest(".team-row");
+      const noButton = row ? row.querySelector('[data-screen="no"]') : null;
+      if (!noButton || !noButton.classList.contains("is-active")) {
+        return;
+      }
+    }
     handleScreenButton(button, mode);
   });
 });
