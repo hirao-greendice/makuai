@@ -4,6 +4,50 @@ const audioMap = {
   yes: new Audio("yes.mp3"),
 };
 
+const audioLevels = {
+  no: 1.0,
+  call: 0.8,
+  yes: 1.0,
+};
+
+const audioMix = {
+  context: null,
+  nodes: new Map(),
+};
+
+// Use Web Audio to allow gain above 1.0.
+const ensureAudioContext = () => {
+  if (audioMix.context) {
+    return audioMix.context;
+  }
+  const AudioContextRef = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextRef) {
+    Object.entries(audioMap).forEach(([key, audio]) => {
+      const level = audioLevels[key] ?? 1;
+      audio.volume = Math.min(1, level);
+    });
+    return null;
+  }
+  const context = new AudioContextRef();
+  audioMix.context = context;
+
+  Object.entries(audioMap).forEach(([key, audio]) => {
+    try {
+      const source = context.createMediaElementSource(audio);
+      const gain = context.createGain();
+      gain.gain.value = audioLevels[key] ?? 1;
+      source.connect(gain);
+      gain.connect(context.destination);
+      audioMix.nodes.set(audio, { source, gain });
+    } catch (error) {
+      const level = audioLevels[key] ?? 1;
+      audio.volume = Math.min(1, level);
+    }
+  });
+
+  return context;
+};
+
 let currentAudio = null;
 let currentAudioTrigger = null;
 let currentScreenButton = null;
@@ -83,6 +127,10 @@ const playAudio = (soundKey, trigger) => {
   const audio = audioMap[soundKey];
   if (!audio) {
     return;
+  }
+  const context = ensureAudioContext();
+  if (context && context.state === "suspended") {
+    context.resume().catch(() => {});
   }
   if (currentAudio === audio && currentAudioTrigger === trigger) {
     stopCurrentAudio();
