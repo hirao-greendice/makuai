@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>進捗管理パネル</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <button class="fullscreen-toggle" type="button" id="fullscreen-toggle">
+      フルスクリーン
+    </button>
+    <main class="board">
+      <section class="column" aria-label="チーム1から4">
+        <div class="team-row" data-team="1">
+          <div class="team-id">1</div>
+          <button class="control judge" type="button" data-judge data-team="1">
+            判定<br />画面
+          </button>
+          <button class="control sound" type="button" data-sound="no">✕</button>
+          <button class="control sound" type="button" data-sound="call">電</button>
+          <button class="control sound" type="button" data-sound="yes">〇</button>
+        </div>
+        <div class="team-row" data-team="2">
+          <div class="team-id">2</div>
+          <button class="control judge" type="button" data-judge data-team="2">
+            判定<br />画面
+          </button>
+          <button class="control sound" type="button" data-sound="no">✕</button>
+          <button class="control sound" type="button" data-sound="call">電</button>
+          <button class="control sound" type="button" data-sound="yes">〇</button>
+        </div>
+        <div class="team-row" data-team="3">
+          <div class="team-id">3</div>
+          <button class="control judge" type="button" data-judge data-team="3">
+            判定<br />画面
+          </button>
+          <button class="control sound" type="button" data-sound="no">✕</button>
+          <button class="control sound" type="button" data-sound="call">電</button>
+          <button class="control sound" type="button" data-sound="yes">〇</button>
+        </div>
+        <div class="team-row" data-team="4">
+          <div class="team-id">4</div>
+          <button class="control judge" type="button" data-judge data-team="4">
+            判定<br />画面
+          </button>
+          <button class="control sound" type="button" data-sound="no">✕</button>
+          <button class="control sound" type="button" data-sound="call">電</button>
+          <button class="control sound" type="button" data-sound="yes">〇</button>
+        </div>
+      </section>
+      <section class="column" aria-label="チーム5から7">
+        <div class="team-row" data-team="5">
+          <div class="team-id">5</div>
+          <button class="control judge" type="button" data-judge data-team="5">
+            判定<br />画面
+          </button>
+          <button class="control sound" type="button" data-sound="no">✕</button>
+          <button class="control sound" type="button" data-sound="call">電</button>
+          <button class="control sound" type="button" data-sound="yes">〇</button>
+        </div>
+        <div class="team-row" data-team="6">
+          <div class="team-id">6</div>
+          <button class="control judge" type="button" data-judge data-team="6">
+            判定<br />画面
+          </button>
+          <button class="control sound" type="button" data-sound="no">✕</button>
+          <button class="control sound" type="button" data-sound="call">電</button>
+          <button class="control sound" type="button" data-sound="yes">〇</button>
+        </div>
+        <div class="team-row" data-team="7">
+          <div class="team-id">7</div>
+          <button class="control judge" type="button" data-judge data-team="7">
+            判定<br />画面
+          </button>
+          <button class="control sound" type="button" data-sound="no">✕</button>
+          <button class="control sound" type="button" data-sound="call">電</button>
+          <button class="control sound" type="button" data-sound="yes">〇</button>
+        </div>
+      </section>
+    </main>
+
+    <div class="overlay" id="judge-overlay" aria-hidden="true">
+      <div class="judge-screen" role="dialog" aria-modal="true">
+        <header class="judge-header">
+          <div class="judge-title">スタッフ操作画面</div>
+          <div class="judge-rule" aria-hidden="true"></div>
+        </header>
+        <div class="judge-step">
+          <span class="step-small">2nd</span>
+          <span class="step-large">STEP 正誤判定</span>
+        </div>
+        <div class="judge-body">
+          <div class="judge-block">
+            <div class="judge-label">アイテムの<br />頭文字</div>
+            <div class="input-box" aria-hidden="true">
+              <span class="caret"></span>
+            </div>
+          </div>
+          <div class="judge-block">
+            <div class="judge-label">アイテムの<br />個数</div>
+            <div class="count-controls">
+              <button class="triangle-button minus" type="button" aria-label="減らす">
+                <svg viewBox="0 0 70 70" aria-hidden="true">
+                  <polygon points="70,0 0,35 70,70"></polygon>
+                </svg>
+                <span class="symbol">-</span>
+              </button>
+              <div class="count-box">0</div>
+              <button class="triangle-button plus" type="button" aria-label="増やす">
+                <svg viewBox="0 0 70 70" aria-hidden="true">
+                  <polygon points="0,0 70,35 0,70"></polygon>
+                </svg>
+                <span class="symbol">+</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <button class="confirm" type="button">確認</button>
+        <button class="hidden-close" type="button" aria-label="閉じる"></button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
