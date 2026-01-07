@@ -34,7 +34,7 @@ button {
 
 .board {
   display: flex;
-  gap: calc(120px * var(--board-scale));
+  gap: calc(60px * var(--board-scale));
   padding: calc(36px * var(--board-scale)) calc(48px * var(--board-scale));
   align-items: flex-start;
 }
