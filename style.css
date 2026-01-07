@@ -139,7 +139,7 @@ button {
   justify-content: center;
   gap: clamp(48px, 14vmin, 180px);
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .judge-block {
@@ -155,6 +155,10 @@ button {
 
 .judge-label.offset-left {
   transform: translateX(clamp(-120px, -10vmin, -60px));
+}
+
+.judge-block.head-letter .input-box {
+  margin-top: clamp(10px, 1.6vmin, 18px);
 }
 
 .input-box {
