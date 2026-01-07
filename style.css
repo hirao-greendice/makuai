@@ -150,8 +150,8 @@ button {
 }
 
 .hotspot-no-call {
-  --anchor-x: 90%;
-  --anchor-y: 10%;
+  --anchor-x: 80%;
+  --anchor-y: 0%;
   --anchor-width: 20%;
   --anchor-height: 20%;
 }
