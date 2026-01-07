@@ -94,7 +94,41 @@ button {
 }
 
 .overlay.is-visible {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.judge-image-layer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  --caret-x: 18%;
+  --caret-y: 55%;
+  --caret-width: 3px;
+  --caret-height: 16%;
+}
+
+.judge-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   display: block;
+}
+
+.image-caret {
+  position: absolute;
+  left: var(--caret-x);
+  top: var(--caret-y);
+  width: var(--caret-width);
+  height: var(--caret-height);
+  background: #fff;
+  animation: blink 1s steps(2, start) infinite;
+  pointer-events: none;
+}
+
+.legacy-screen {
+  display: none;
 }
 
 .judge-screen {

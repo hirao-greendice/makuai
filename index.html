@@ -81,7 +81,12 @@
     </main>
 
     <div class="overlay" id="judge-overlay" aria-hidden="true">
-      <div class="judge-screen" role="dialog" aria-modal="true">
+      <div class="judge-image-layer">
+        <img class="judge-image" src="hantei.png" alt="判定画面" />
+        <div class="image-caret" aria-hidden="true"></div>
+      </div>
+      <button class="hidden-close" type="button" aria-label="閉じる"></button>
+      <div class="judge-screen legacy-screen" role="dialog" aria-modal="true">
         <header class="judge-header">
           <div class="judge-title">スタッフ操作画面</div>
           <div class="judge-rule" aria-hidden="true"></div>

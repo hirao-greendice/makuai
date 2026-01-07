@@ -12,6 +12,9 @@ const overlay = document.getElementById("judge-overlay");
 const hiddenClose = document.querySelector(".hidden-close");
 const fullscreenToggle = document.getElementById("fullscreen-toggle");
 const fullscreenRoot = document.documentElement;
+const judgeImageLayer = document.querySelector(".judge-image-layer");
+const judgeImage = document.querySelector(".judge-image");
+const imageCaret = document.querySelector(".image-caret");
 
 const stopCurrentAudio = () => {
   if (!currentAudio) {
@@ -40,6 +43,7 @@ const openJudgeOverlay = (button) => {
   overlay.setAttribute("aria-hidden", "false");
   button.classList.add("is-active");
   currentJudgeButton = button;
+  requestAnimationFrame(updateCaretPosition);
 };
 
 const closeJudgeOverlay = () => {
@@ -119,6 +123,90 @@ if (hiddenClose) {
   });
 }
 
+const parsePercent = (raw, fallback) => {
+  if (!raw) {
+    return fallback;
+  }
+  const value = raw.trim();
+  if (value.endsWith("%")) {
+    const num = parseFloat(value);
+    return Number.isNaN(num) ? fallback : num / 100;
+  }
+  const num = parseFloat(value);
+  if (Number.isNaN(num)) {
+    return fallback;
+  }
+  return num <= 1 ? num : num / 100;
+};
+
+const parseLength = (raw, fallback) => {
+  if (!raw) {
+    return fallback;
+  }
+  const value = raw.trim();
+  if (value.endsWith("%")) {
+    const num = parseFloat(value);
+    return Number.isNaN(num) ? fallback : { type: "percent", value: num / 100 };
+  }
+  const num = parseFloat(value);
+  if (Number.isNaN(num)) {
+    return fallback;
+  }
+  return { type: "px", value: num };
+};
+
+const updateCaretPosition = () => {
+  if (!judgeImageLayer || !judgeImage || !imageCaret) {
+    return;
+  }
+  const layerRect = judgeImageLayer.getBoundingClientRect();
+  if (layerRect.width === 0 || layerRect.height === 0) {
+    return;
+  }
+  const naturalWidth = judgeImage.naturalWidth;
+  const naturalHeight = judgeImage.naturalHeight;
+  if (!naturalWidth || !naturalHeight) {
+    return;
+  }
+
+  const scale = Math.min(
+    layerRect.width / naturalWidth,
+    layerRect.height / naturalHeight
+  );
+  const renderedWidth = naturalWidth * scale;
+  const renderedHeight = naturalHeight * scale;
+  const offsetX = (layerRect.width - renderedWidth) / 2;
+  const offsetY = (layerRect.height - renderedHeight) / 2;
+
+  const styles = getComputedStyle(judgeImageLayer);
+  const caretX = parsePercent(styles.getPropertyValue("--caret-x"), 0.3);
+  const caretY = parsePercent(styles.getPropertyValue("--caret-y"), 0.45);
+  const caretHeight = parseLength(styles.getPropertyValue("--caret-height"), {
+    type: "percent",
+    value: 0.18,
+  });
+  const caretWidth = parseLength(styles.getPropertyValue("--caret-width"), {
+    type: "px",
+    value: 2,
+  });
+
+  const left = offsetX + renderedWidth * caretX;
+  const top = offsetY + renderedHeight * caretY;
+  const heightPx =
+    caretHeight.type === "percent"
+      ? renderedHeight * caretHeight.value
+      : caretHeight.value;
+  const widthPx =
+    caretWidth.type === "percent"
+      ? renderedWidth * caretWidth.value
+      : caretWidth.value;
+
+  imageCaret.style.left = `${left}px`;
+  imageCaret.style.top = `${top}px`;
+  imageCaret.style.height = `${heightPx}px`;
+  imageCaret.style.width = `${widthPx}px`;
+};
+
 const updateFullscreenLabel = () => {
   if (!fullscreenToggle) {
     return;
@@ -139,5 +227,16 @@ if (fullscreenToggle) {
     }
   });
   document.addEventListener("fullscreenchange", updateFullscreenLabel);
+  document.addEventListener("fullscreenchange", updateCaretPosition);
   updateFullscreenLabel();
 }
+
+if (judgeImage) {
+  if (judgeImage.complete) {
+    updateCaretPosition();
+  } else {
+    judgeImage.addEventListener("load", updateCaretPosition);
+  }
+}
+
+window.addEventListener("resize", updateCaretPosition);
