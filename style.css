@@ -6,7 +6,7 @@
   --button-text: #000;
   --button-active: #ffd84d;
   --accent-red: #e60012;
-  --board-scale: 1.8;
+  --board-scale: 1.62;
 }
 
 * {
@@ -106,7 +106,7 @@ button {
 }
 
 .judge-title {
-  font-size: clamp(55px, 8.5vmin, 90px);
+  font-size: clamp(50px, 7.65vmin, 81px);
   font-weight: 700;
   margin-bottom: clamp(12px, 2vmin, 20px);
 }
@@ -126,11 +126,11 @@ button {
 }
 
 .step-small {
-  font-size: clamp(40px, 6.4vmin, 64px);
+  font-size: clamp(32px, 5.12vmin, 51px);
 }
 
 .step-large {
-  font-size: clamp(52px, 8.4vmin, 88px);
+  font-size: clamp(42px, 6.72vmin, 70px);
 }
 
 .judge-body {
@@ -151,6 +151,10 @@ button {
   line-height: 1.2;
   font-weight: 700;
   margin-bottom: clamp(12px, 2.4vmin, 20px);
+}
+
+.judge-label.offset-left {
+  transform: translateX(clamp(-14px, -1.6vmin, -8px));
 }
 
 .input-box {
