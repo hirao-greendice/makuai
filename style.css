@@ -139,7 +139,7 @@ button {
   justify-content: center;
   gap: clamp(48px, 14vmin, 180px);
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .judge-block {
@@ -154,7 +154,7 @@ button {
 }
 
 .judge-label.offset-left {
-  transform: translateX(clamp(-14px, -1.6vmin, -8px));
+  transform: translateX(clamp(-120px, -10vmin, -60px));
 }
 
 .input-box {
@@ -181,18 +181,18 @@ button {
 }
 
 .count-box {
-  width: clamp(70px, 13vmin, 110px);
-  height: clamp(70px, 13vmin, 110px);
+  width: clamp(84px, 15.6vmin, 132px);
+  height: clamp(84px, 15.6vmin, 132px);
   border: clamp(1px, 0.3vmin, 2px) solid var(--panel-text);
   display: grid;
   place-items: center;
-  font-size: clamp(28px, 4.8vmin, 44px);
+  font-size: clamp(34px, 5.8vmin, 53px);
   font-weight: 700;
 }
 
 .triangle-button {
-  width: clamp(54px, 10vmin, 88px);
-  height: clamp(54px, 10vmin, 88px);
+  width: clamp(65px, 12vmin, 106px);
+  height: clamp(65px, 12vmin, 106px);
   position: relative;
   background: transparent;
   cursor: pointer;
@@ -214,7 +214,7 @@ button {
   left: 50%;
   top: 50%;
   transform: translate(calc(-50% + var(--symbol-shift, 0px)), -50%);
-  font-size: clamp(22px, 4vmin, 34px);
+  font-size: clamp(26px, 4.8vmin, 41px);
   font-weight: 700;
   color: var(--panel-text);
 }
@@ -228,7 +228,7 @@ button {
 }
 
 .confirm {
-  margin: clamp(32px, 6vmin, 64px) auto 0;
+  margin: clamp(56px, 9vmin, 90px) auto 0;
   display: block;
   width: clamp(200px, 26vmin, 280px);
   height: clamp(56px, 9vmin, 76px);
