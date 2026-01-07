@@ -5,8 +5,9 @@ const audioMap = {
 };
 
 let currentAudio = null;
-let currentAudioButton = null;
-let currentJudgeButton = null;
+let currentAudioTrigger = null;
+let currentScreenButton = null;
+let currentScreen = null;
 
 const overlay = document.getElementById("judge-overlay");
 const hiddenClose = document.querySelector(".hidden-close");
@@ -14,7 +15,14 @@ const fullscreenToggle = document.getElementById("fullscreen-toggle");
 const fullscreenRoot = document.documentElement;
 const judgeImageLayer = document.querySelector(".judge-image-layer");
 const judgeImage = document.querySelector(".judge-image");
-const imageCaret = document.querySelector(".image-caret");
+const imageAnchors = document.querySelectorAll("[data-anchor]");
+const hotspotButtons = document.querySelectorAll("[data-hotspot]");
+
+const screenImages = {
+  judge: "hantei.png",
+  no: "hantei1.png",
+  yes: "hantei2.png",
+};
 
 const stopCurrentAudio = () => {
   if (!currentAudio) {
@@ -23,39 +31,77 @@ const stopCurrentAudio = () => {
   currentAudio.pause();
   currentAudio.currentTime = 0;
   currentAudio = null;
-  currentAudioButton = null;
+  currentAudioTrigger = null;
 };
 
 Object.values(audioMap).forEach((audio) => {
   audio.addEventListener("ended", () => {
     if (currentAudio === audio) {
       currentAudio = null;
-      currentAudioButton = null;
+      currentAudioTrigger = null;
     }
   });
 });
 
-const openJudgeOverlay = (button) => {
+const setOverlayMode = (mode) => {
+  if (!overlay) {
+    return;
+  }
+  overlay.dataset.mode = mode;
+  if (!judgeImage) {
+    return;
+  }
+  const nextSrc = screenImages[mode] || screenImages.judge;
+  if (judgeImage.getAttribute("src") !== nextSrc) {
+    judgeImage.setAttribute("src", nextSrc);
+  } else if (judgeImage.complete) {
+    updateAnchors();
+  }
+};
+
+const openOverlay = (button, mode) => {
   if (!document.fullscreenElement && fullscreenRoot.requestFullscreen) {
     fullscreenRoot.requestFullscreen().catch(() => {});
   }
+  setOverlayMode(mode);
   overlay.classList.add("is-visible");
   overlay.setAttribute("aria-hidden", "false");
   button.classList.add("is-active");
-  currentJudgeButton = button;
-  requestAnimationFrame(updateCaretPosition);
+  currentScreenButton = button;
+  currentScreen = mode;
+  requestAnimationFrame(updateAnchors);
 };
 
-const closeJudgeOverlay = () => {
+const closeOverlay = () => {
   overlay.classList.remove("is-visible");
   overlay.setAttribute("aria-hidden", "true");
+  currentScreenButton = null;
+  currentScreen = null;
+};
+
+const playAudio = (soundKey, trigger) => {
+  const audio = audioMap[soundKey];
+  if (!audio) {
+    return;
+  }
+  if (currentAudio === audio && currentAudioTrigger === trigger) {
+    stopCurrentAudio();
+    return;
+  }
+  if (currentAudio && currentAudio !== audio) {
+    stopCurrentAudio();
+  }
+  currentAudio = audio;
+  currentAudioTrigger = trigger;
+  audio.currentTime = 0;
+  audio.play();
 };
 
 document.querySelectorAll("[data-sound]").forEach((button) => {
   button.addEventListener("click", () => {
     const isActive = button.classList.contains("is-active");
     if (isActive) {
-      if (currentAudioButton === button) {
+      if (currentAudioTrigger === button) {
         stopCurrentAudio();
       }
       button.classList.remove("is-active");
@@ -63,37 +109,38 @@ document.querySelectorAll("[data-sound]").forEach((button) => {
     }
 
     button.classList.add("is-active");
-    if (currentAudioButton && currentAudioButton !== button) {
-      stopCurrentAudio();
-    }
-
     const soundKey = button.dataset.sound;
-    const audio = audioMap[soundKey];
-    if (!audio) {
-      return;
-    }
-    currentAudio = audio;
-    currentAudioButton = button;
-    audio.currentTime = 0;
-    audio.play();
+    playAudio(soundKey, button);
   });
 });
 
+const handleScreenButton = (button, mode) => {
+  const isActive = button.classList.contains("is-active");
+  if (isActive) {
+    button.classList.remove("is-active");
+    if (currentScreenButton === button && overlay.classList.contains("is-visible")) {
+      closeOverlay();
+    }
+    if (currentScreenButton === button) {
+      currentScreenButton = null;
+      currentScreen = null;
+    }
+    return;
+  }
+
+  openOverlay(button, mode);
+};
+
 document.querySelectorAll("[data-judge]").forEach((button) => {
   button.addEventListener("click", () => {
-    const isActive = button.classList.contains("is-active");
-    if (isActive) {
-      button.classList.remove("is-active");
-      if (currentJudgeButton === button && overlay.classList.contains("is-visible")) {
-        closeJudgeOverlay();
-      }
-      if (currentJudgeButton === button) {
-        currentJudgeButton = null;
-      }
-      return;
-    }
+    handleScreenButton(button, "judge");
+  });
+});
 
-    openJudgeOverlay(button);
+document.querySelectorAll("[data-screen]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const mode = button.dataset.screen || "judge";
+    handleScreenButton(button, mode);
   });
 });
 
@@ -113,7 +160,7 @@ if (hiddenClose) {
     closeTapCount += 1;
     if (closeTapCount >= 2) {
       resetCloseTap();
-      closeJudgeOverlay();
+      closeOverlay();
       return;
     }
     if (closeTapTimer) {
@@ -122,6 +169,22 @@ if (hiddenClose) {
     closeTapTimer = setTimeout(resetCloseTap, 500);
   });
 }
+
+const hotspotSoundMap = {
+  "no-confirm": "no",
+  "no-call": "call",
+  "yes-confirm": "yes",
+};
+
+hotspotButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const key = hotspotSoundMap[button.dataset.hotspot];
+    if (!key) {
+      return;
+    }
+    playAudio(key, button);
+  });
+});
 
 const parsePercent = (raw, fallback) => {
   if (!raw) {
@@ -155,8 +218,8 @@ const parseLength = (raw, fallback) => {
   return { type: "px", value: num };
 };
 
-const updateCaretPosition = () => {
-  if (!judgeImageLayer || !judgeImage || !imageCaret) {
+const updateAnchors = () => {
+  if (!judgeImageLayer || !judgeImage || imageAnchors.length === 0) {
     return;
   }
   const layerRect = judgeImageLayer.getBoundingClientRect();
@@ -178,33 +241,35 @@ const updateCaretPosition = () => {
   const offsetX = (layerRect.width - renderedWidth) / 2;
   const offsetY = (layerRect.height - renderedHeight) / 2;
 
-  const styles = getComputedStyle(judgeImageLayer);
-  const caretX = parsePercent(styles.getPropertyValue("--caret-x"), 0.3);
-  const caretY = parsePercent(styles.getPropertyValue("--caret-y"), 0.45);
-  const caretHeight = parseLength(styles.getPropertyValue("--caret-height"), {
-    type: "percent",
-    value: 0.18,
-  });
-  const caretWidth = parseLength(styles.getPropertyValue("--caret-width"), {
-    type: "px",
-    value: 2,
-  });
+  imageAnchors.forEach((anchor) => {
+    const styles = getComputedStyle(anchor);
+    const anchorX = parsePercent(styles.getPropertyValue("--anchor-x"), 0);
+    const anchorY = parsePercent(styles.getPropertyValue("--anchor-y"), 0);
+    const anchorWidth = parseLength(styles.getPropertyValue("--anchor-width"), {
+      type: "percent",
+      value: 0,
+    });
+    const anchorHeight = parseLength(styles.getPropertyValue("--anchor-height"), {
+      type: "percent",
+      value: 0,
+    });
 
-  const left = offsetX + renderedWidth * caretX;
-  const top = offsetY + renderedHeight * caretY;
-  const heightPx =
-    caretHeight.type === "percent"
-      ? renderedHeight * caretHeight.value
-      : caretHeight.value;
-  const widthPx =
-    caretWidth.type === "percent"
-      ? renderedWidth * caretWidth.value
-      : caretWidth.value;
+    const left = offsetX + renderedWidth * anchorX;
+    const top = offsetY + renderedHeight * anchorY;
+    const widthPx =
+      anchorWidth.type === "percent"
+        ? renderedWidth * anchorWidth.value
+        : anchorWidth.value;
+    const heightPx =
+      anchorHeight.type === "percent"
+        ? renderedHeight * anchorHeight.value
+        : anchorHeight.value;
 
-  imageCaret.style.left = `${left}px`;
-  imageCaret.style.top = `${top}px`;
-  imageCaret.style.height = `${heightPx}px`;
-  imageCaret.style.width = `${widthPx}px`;
+    anchor.style.left = `${left}px`;
+    anchor.style.top = `${top}px`;
+    anchor.style.width = `${widthPx}px`;
+    anchor.style.height = `${heightPx}px`;
+  });
 };
 
 const updateFullscreenLabel = () => {
@@ -227,16 +292,16 @@ if (fullscreenToggle) {
     }
   });
   document.addEventListener("fullscreenchange", updateFullscreenLabel);
-  document.addEventListener("fullscreenchange", updateCaretPosition);
+  document.addEventListener("fullscreenchange", updateAnchors);
   updateFullscreenLabel();
 }
 
 if (judgeImage) {
   if (judgeImage.complete) {
-    updateCaretPosition();
+    updateAnchors();
   } else {
-    judgeImage.addEventListener("load", updateCaretPosition);
+    judgeImage.addEventListener("load", updateAnchors);
   }
 }
 
-window.addEventListener("resize", updateCaretPosition);
+window.addEventListener("resize", updateAnchors);

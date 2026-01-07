@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
@@ -17,36 +17,32 @@
           <button class="control judge" type="button" data-judge data-team="1">
             判定<br />画面
           </button>
-          <button class="control sound" type="button" data-sound="no">✕</button>
-          <button class="control sound" type="button" data-sound="call">電</button>
-          <button class="control sound" type="button" data-sound="yes">〇</button>
+          <button class="control screen" type="button" data-screen="no">✕</button>
+          <button class="control screen" type="button" data-screen="yes">〇</button>
         </div>
         <div class="team-row" data-team="2">
           <div class="team-id">2</div>
           <button class="control judge" type="button" data-judge data-team="2">
             判定<br />画面
           </button>
-          <button class="control sound" type="button" data-sound="no">✕</button>
-          <button class="control sound" type="button" data-sound="call">電</button>
-          <button class="control sound" type="button" data-sound="yes">〇</button>
+          <button class="control screen" type="button" data-screen="no">✕</button>
+          <button class="control screen" type="button" data-screen="yes">〇</button>
         </div>
         <div class="team-row" data-team="3">
           <div class="team-id">3</div>
           <button class="control judge" type="button" data-judge data-team="3">
             判定<br />画面
           </button>
-          <button class="control sound" type="button" data-sound="no">✕</button>
-          <button class="control sound" type="button" data-sound="call">電</button>
-          <button class="control sound" type="button" data-sound="yes">〇</button>
+          <button class="control screen" type="button" data-screen="no">✕</button>
+          <button class="control screen" type="button" data-screen="yes">〇</button>
         </div>
         <div class="team-row" data-team="4">
           <div class="team-id">4</div>
           <button class="control judge" type="button" data-judge data-team="4">
             判定<br />画面
           </button>
-          <button class="control sound" type="button" data-sound="no">✕</button>
-          <button class="control sound" type="button" data-sound="call">電</button>
-          <button class="control sound" type="button" data-sound="yes">〇</button>
+          <button class="control screen" type="button" data-screen="no">✕</button>
+          <button class="control screen" type="button" data-screen="yes">〇</button>
         </div>
       </section>
       <section class="column" aria-label="チーム5から7">
@@ -55,27 +51,24 @@
           <button class="control judge" type="button" data-judge data-team="5">
             判定<br />画面
           </button>
-          <button class="control sound" type="button" data-sound="no">✕</button>
-          <button class="control sound" type="button" data-sound="call">電</button>
-          <button class="control sound" type="button" data-sound="yes">〇</button>
+          <button class="control screen" type="button" data-screen="no">✕</button>
+          <button class="control screen" type="button" data-screen="yes">〇</button>
         </div>
         <div class="team-row" data-team="6">
           <div class="team-id">6</div>
           <button class="control judge" type="button" data-judge data-team="6">
             判定<br />画面
           </button>
-          <button class="control sound" type="button" data-sound="no">✕</button>
-          <button class="control sound" type="button" data-sound="call">電</button>
-          <button class="control sound" type="button" data-sound="yes">〇</button>
+          <button class="control screen" type="button" data-screen="no">✕</button>
+          <button class="control screen" type="button" data-screen="yes">〇</button>
         </div>
         <div class="team-row" data-team="7">
           <div class="team-id">7</div>
           <button class="control judge" type="button" data-judge data-team="7">
             判定<br />画面
           </button>
-          <button class="control sound" type="button" data-sound="no">✕</button>
-          <button class="control sound" type="button" data-sound="call">電</button>
-          <button class="control sound" type="button" data-sound="yes">〇</button>
+          <button class="control screen" type="button" data-screen="no">✕</button>
+          <button class="control screen" type="button" data-screen="yes">〇</button>
         </div>
       </section>
     </main>
@@ -83,7 +76,28 @@
     <div class="overlay" id="judge-overlay" aria-hidden="true">
       <div class="judge-image-layer">
         <img class="judge-image" src="hantei.png" alt="判定画面" />
-        <div class="image-caret" aria-hidden="true"></div>
+        <div class="image-caret image-anchor" data-anchor="caret" aria-hidden="true"></div>
+        <button
+          class="image-hotspot image-anchor hotspot-no-confirm"
+          type="button"
+          data-hotspot="no-confirm"
+          data-anchor="no-confirm"
+          aria-label="不正解確認"
+        ></button>
+        <button
+          class="image-hotspot image-anchor hotspot-no-call"
+          type="button"
+          data-hotspot="no-call"
+          data-anchor="no-call"
+          aria-label="呼び出し"
+        ></button>
+        <button
+          class="image-hotspot image-anchor hotspot-yes-confirm"
+          type="button"
+          data-hotspot="yes-confirm"
+          data-anchor="yes-confirm"
+          aria-label="正解確認"
+        ></button>
       </div>
       <button class="hidden-close" type="button" aria-label="閉じる"></button>
       <div class="judge-screen legacy-screen" role="dialog" aria-modal="true">
@@ -129,3 +143,8 @@
     <script src="script.js"></script>
   </body>
 </html>
+
+
+
+
+
