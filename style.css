@@ -90,6 +90,7 @@ button {
   inset: 0;
   background: var(--panel-bg);
   display: none;
+  pointer-events: none;
   z-index: 1000;
 }
 
@@ -97,6 +98,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: auto;
 }
 
 .judge-image-layer {

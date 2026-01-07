@@ -10,7 +10,7 @@ let currentScreenButton = null;
 let currentScreen = null;
 
 const overlay = document.getElementById("judge-overlay");
-const hiddenClose = document.querySelector(".hidden-close");
+const hiddenCloseButtons = document.querySelectorAll(".hidden-close");
 const fullscreenToggle = document.getElementById("fullscreen-toggle");
 const fullscreenRoot = document.documentElement;
 const judgeImageLayer = document.querySelector(".judge-image-layer");
@@ -144,31 +144,11 @@ document.querySelectorAll("[data-screen]").forEach((button) => {
   });
 });
 
-let closeTapCount = 0;
-let closeTapTimer = null;
-
-const resetCloseTap = () => {
-  closeTapCount = 0;
-  if (closeTapTimer) {
-    clearTimeout(closeTapTimer);
-    closeTapTimer = null;
-  }
-};
-
-if (hiddenClose) {
-  hiddenClose.addEventListener("click", () => {
-    closeTapCount += 1;
-    if (closeTapCount >= 2) {
-      resetCloseTap();
-      closeOverlay();
-      return;
-    }
-    if (closeTapTimer) {
-      clearTimeout(closeTapTimer);
-    }
-    closeTapTimer = setTimeout(resetCloseTap, 500);
+hiddenCloseButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    closeOverlay();
   });
-}
+});
 
 const hotspotSoundMap = {
   "no-confirm": "no",
