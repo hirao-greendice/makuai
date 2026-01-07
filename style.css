@@ -106,7 +106,7 @@ button {
 }
 
 .judge-title {
-  font-size: clamp(50px, 7.65vmin, 81px);
+  font-size: clamp(40px, 6.12vmin, 65px);
   font-weight: 700;
   margin-bottom: clamp(12px, 2vmin, 20px);
 }
@@ -118,7 +118,7 @@ button {
 }
 
 .judge-step {
-  margin-top: clamp(44px, 7vmin, 86px);
+  margin-top: clamp(36px, 6vmin, 78px);
   display: flex;
   align-items: baseline;
   gap: clamp(10px, 2vmin, 20px);
@@ -126,7 +126,7 @@ button {
 }
 
 .step-small {
-  font-size: clamp(32px, 5.12vmin, 51px);
+  font-size: clamp(35px, 5.6vmin, 56px);
 }
 
 .step-large {
@@ -232,7 +232,7 @@ button {
 }
 
 .confirm {
-  margin: clamp(56px, 9vmin, 90px) auto 0;
+  margin: clamp(64px, 10vmin, 100px) auto 0;
   display: block;
   width: clamp(200px, 26vmin, 280px);
   height: clamp(56px, 9vmin, 76px);
