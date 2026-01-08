@@ -5,9 +5,9 @@ const audioMap = {
 };
 
 const audioLevels = {
-  no: 1.0,
+  no: 1.3,
   call: 0.8,
-  yes: 1.0,
+  yes: 1.1,
 };
 
 const audioMix = {
