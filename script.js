@@ -54,8 +54,6 @@ const ensureAudioContext = () => {
 
 let currentAudio = null;
 let currentAudioTrigger = null;
-let currentScreenButton = null;
-let currentScreen = null;
 
 const overlay = document.getElementById("judge-overlay");
 const hiddenCloseButtons = document.querySelectorAll(".hidden-close");
@@ -135,26 +133,19 @@ const setOverlayMode = (mode) => {
   }
 };
 
-const openOverlay = (button, mode) => {
+const openOverlay = (mode) => {
   if (!document.fullscreenElement && fullscreenRoot.requestFullscreen) {
     fullscreenRoot.requestFullscreen().catch(() => {});
   }
   setOverlayMode(mode);
   overlay.classList.add("is-visible");
   overlay.setAttribute("aria-hidden", "false");
-  if (button) {
-    button.classList.add("is-active");
-  }
-  currentScreenButton = button || null;
-  currentScreen = mode;
   requestAnimationFrame(updateAnchors);
 };
 
 const closeOverlay = () => {
   overlay.classList.remove("is-visible");
   overlay.setAttribute("aria-hidden", "true");
-  currentScreenButton = null;
-  currentScreen = null;
 };
 
 const playAudio = (soundKey, trigger) => {
@@ -196,40 +187,16 @@ document.querySelectorAll("[data-sound]").forEach((button) => {
   });
 });
 
-const handleScreenButton = (button, mode) => {
-  const isActive = button.classList.contains("is-active");
-  if (isActive) {
-    button.classList.remove("is-active");
-    if (currentScreenButton === button && overlay.classList.contains("is-visible")) {
-      closeOverlay();
-    }
-    if (currentScreenButton === button) {
-      currentScreenButton = null;
-      currentScreen = null;
-    }
-    return;
-  }
-
-  openOverlay(button, mode);
-};
-
 document.querySelectorAll("[data-judge]").forEach((button) => {
   button.addEventListener("click", () => {
-    handleScreenButton(button, "judge");
+    openOverlay("judge");
   });
 });
 
 document.querySelectorAll("[data-screen]").forEach((button) => {
   button.addEventListener("click", () => {
     const mode = button.dataset.screen || "judge";
-    if (mode === "yes") {
-      const row = button.closest(".team-row");
-      const noButton = row ? row.querySelector('[data-screen="no"]') : null;
-      if (!noButton || !noButton.classList.contains("is-active")) {
-        return;
-      }
-    }
-    handleScreenButton(button, mode);
+    openOverlay(mode);
   });
 });
 
@@ -239,7 +206,7 @@ document.querySelectorAll("[data-emergency-screen]").forEach((button) => {
       return;
     }
     const mode = button.dataset.emergencyScreen || "judge";
-    openOverlay(null, mode);
+    openOverlay(mode);
   });
 });
 
@@ -261,11 +228,9 @@ const setEmergencyLocked = (locked) => {
   if (!emergencyPanel) {
     return;
   }
-  if (locked) {
-    if (emergencyState.lockTimeout) {
-      clearTimeout(emergencyState.lockTimeout);
-      emergencyState.lockTimeout = null;
-    }
+  if (locked && emergencyState.lockTimeout) {
+    clearTimeout(emergencyState.lockTimeout);
+    emergencyState.lockTimeout = null;
   }
 
   emergencyPanel.classList.toggle("is-unlocked", !locked);
@@ -423,6 +388,8 @@ if (fullscreenToggle) {
   document.addEventListener("fullscreenchange", updateFullscreenLabel);
   document.addEventListener("fullscreenchange", updateAnchors);
   updateFullscreenLabel();
+} else {
+  document.addEventListener("fullscreenchange", updateAnchors);
 }
 
 if (judgeImage) {

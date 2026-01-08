@@ -38,17 +38,26 @@ button {
 
 .board {
   display: flex;
+  justify-content: center;
   gap: calc(30px * var(--board-scale));
   padding: calc(36px * var(--board-scale)) calc(48px * var(--board-scale));
-  align-items: flex-start;
+  align-items: center;
+  width: 100%;
 }
 
 .board-stack {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   gap: calc(20px * var(--board-scale));
 }
+.home-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(24px * var(--board-scale));
+}
+
 
 .emergency-panel {
   border: 2px solid var(--panel-text);
@@ -150,6 +159,12 @@ button {
   font-size: calc(20px * var(--board-scale));
   cursor: pointer;
 }
+.home-controls .control {
+  width: calc(92px * var(--board-scale));
+  height: calc(92px * var(--board-scale));
+  font-size: calc(40px * var(--board-scale));
+}
+
 
 .control.judge {
   width: calc(54px * var(--board-scale));
@@ -158,10 +173,11 @@ button {
   letter-spacing: 0.08em;
   font-weight: 600;
 }
-
-.control.is-active {
-  background: var(--button-active);
+.home-controls .control.judge {
+  width: calc(108px * var(--board-scale));
+  font-size: calc(24px * var(--board-scale));
 }
+
 
 .overlay {
   position: fixed;

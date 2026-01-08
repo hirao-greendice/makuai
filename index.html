@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
@@ -12,92 +12,23 @@
     </button>
     <div class="board-stack">
       <main class="board">
-      <section class="column" aria-label="チーム1から4">
-        <div class="team-row" data-team="1">
-          <div class="team-id">1</div>
-          <button class="control judge" type="button" data-judge data-team="1">
+        <section class="home-controls" aria-label="ホーム操作">
+          <button class="control judge" type="button" data-judge>
             判定<br />画面
           </button>
-          <button class="control screen" type="button" data-screen="no">✕</button>
+          <button class="control screen" type="button" data-screen="no">&#10005;</button>
           <button class="control screen" type="button" data-screen="yes">〇</button>
-        </div>
-        <div class="team-row" data-team="2">
-          <div class="team-id">2</div>
-          <button class="control judge" type="button" data-judge data-team="2">
-            判定<br />画面
-          </button>
-          <button class="control screen" type="button" data-screen="no">✕</button>
-          <button class="control screen" type="button" data-screen="yes">〇</button>
-        </div>
-        <div class="team-row" data-team="3">
-          <div class="team-id">3</div>
-          <button class="control judge" type="button" data-judge data-team="3">
-            判定<br />画面
-          </button>
-          <button class="control screen" type="button" data-screen="no">✕</button>
-          <button class="control screen" type="button" data-screen="yes">〇</button>
-        </div>
-        <div class="team-row" data-team="4">
-          <div class="team-id">4</div>
-          <button class="control judge" type="button" data-judge data-team="4">
-            判定<br />画面
-          </button>
-          <button class="control screen" type="button" data-screen="no">✕</button>
-          <button class="control screen" type="button" data-screen="yes">〇</button>
-        </div>
-      </section>
-      <section class="column" aria-label="チーム5から7">
-        <div class="team-row" data-team="5">
-          <div class="team-id">5</div>
-          <button class="control judge" type="button" data-judge data-team="5">
-            判定<br />画面
-          </button>
-          <button class="control screen" type="button" data-screen="no">✕</button>
-          <button class="control screen" type="button" data-screen="yes">〇</button>
-        </div>
-        <div class="team-row" data-team="6">
-          <div class="team-id">6</div>
-          <button class="control judge" type="button" data-judge data-team="6">
-            判定<br />画面
-          </button>
-          <button class="control screen" type="button" data-screen="no">✕</button>
-          <button class="control screen" type="button" data-screen="yes">〇</button>
-        </div>
-        <div class="team-row" data-team="7">
-          <div class="team-id">7</div>
-          <button class="control judge" type="button" data-judge data-team="7">
-            判定<br />画面
-          </button>
-          <button class="control screen" type="button" data-screen="no">✕</button>
-          <button class="control screen" type="button" data-screen="yes">〇</button>
-        </div>
-      </section>
+        </section>
       </main>
       <section class="emergency-panel" aria-label="緊急操作">
         <div class="emergency-buttons">
-          <button
-            class="emergency-button"
-            type="button"
-            data-emergency-screen="judge"
-            disabled
-          >
-            判定<br />画面
-          </button>
-          <button
-            class="emergency-button is-negative"
-            type="button"
-            data-emergency-screen="no"
-            disabled
-          >
-            ×画面
-          </button>
           <button
             class="emergency-button is-negative"
             type="button"
             data-emergency-sound="no"
             disabled
           >
-            ×音
+            &#10005;
           </button>
           <button
             class="emergency-button is-alert"
@@ -105,15 +36,7 @@
             data-emergency-sound="call"
             disabled
           >
-            ×電話
-          </button>
-          <button
-            class="emergency-button is-positive"
-            type="button"
-            data-emergency-screen="yes"
-            disabled
-          >
-            〇画面
+            電
           </button>
           <button
             class="emergency-button is-positive"
@@ -121,7 +44,7 @@
             data-emergency-sound="yes"
             disabled
           >
-            〇音
+            〇
           </button>
           <button
             class="emergency-button emergency-unlock"
@@ -204,8 +127,3 @@
     <script src="script.js"></script>
   </body>
 </html>
-
-
-
-
-
