@@ -10,7 +10,8 @@
     <button class="fullscreen-toggle" type="button" id="fullscreen-toggle">
       フルスクリーン
     </button>
-    <main class="board">
+    <div class="board-stack">
+      <main class="board">
       <section class="column" aria-label="チーム1から4">
         <div class="team-row" data-team="1">
           <div class="team-id">1</div>
@@ -71,7 +72,67 @@
           <button class="control screen" type="button" data-screen="yes">〇</button>
         </div>
       </section>
-    </main>
+      </main>
+      <section class="emergency-panel" aria-label="緊急操作">
+        <div class="emergency-buttons">
+          <button
+            class="emergency-button"
+            type="button"
+            data-emergency-screen="judge"
+            disabled
+          >
+            判定<br />画面
+          </button>
+          <button
+            class="emergency-button is-negative"
+            type="button"
+            data-emergency-screen="no"
+            disabled
+          >
+            ×画面
+          </button>
+          <button
+            class="emergency-button is-negative"
+            type="button"
+            data-emergency-sound="no"
+            disabled
+          >
+            ×音
+          </button>
+          <button
+            class="emergency-button is-alert"
+            type="button"
+            data-emergency-sound="call"
+            disabled
+          >
+            電話
+          </button>
+          <button
+            class="emergency-button is-positive"
+            type="button"
+            data-emergency-screen="yes"
+            disabled
+          >
+            〇画面
+          </button>
+          <button
+            class="emergency-button is-positive"
+            type="button"
+            data-emergency-sound="yes"
+            disabled
+          >
+            〇音
+          </button>
+          <button
+            class="emergency-button emergency-unlock"
+            type="button"
+            id="emergency-unlock"
+          >
+            ロック<br />解除
+          </button>
+        </div>
+      </section>
+    </div>
 
     <div class="overlay" id="judge-overlay" aria-hidden="true">
       <div class="judge-image-layer">

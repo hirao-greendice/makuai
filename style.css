@@ -6,6 +6,9 @@
   --button-text: #000;
   --button-active: #ffd84d;
   --accent-red: #e60012;
+  --emergency-alert: #ffb200;
+  --emergency-positive: #48ff00;
+  --emergency-negative: #ff4d4d;
   --board-scale: 1.62;
 }
 
@@ -21,6 +24,7 @@ body {
   font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo",
     sans-serif;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -37,6 +41,80 @@ button {
   gap: calc(30px * var(--board-scale));
   padding: calc(36px * var(--board-scale)) calc(48px * var(--board-scale));
   align-items: flex-start;
+}
+
+.board-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: calc(20px * var(--board-scale));
+}
+
+.emergency-panel {
+  border: 2px solid var(--panel-text);
+  background: #0a0a0a;
+  padding: calc(12px * var(--board-scale)) calc(16px * var(--board-scale));
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.emergency-panel.is-unlocked {
+  border-color: var(--emergency-positive);
+}
+
+.emergency-buttons {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: calc(12px * var(--board-scale));
+}
+
+.emergency-button {
+  width: calc(46px * var(--board-scale));
+  height: calc(46px * var(--board-scale));
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: 1px solid var(--panel-text);
+  display: grid;
+  place-items: center;
+  font-size: calc(12px * var(--board-scale));
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.emergency-button.is-negative {
+  background: #1b0b0b;
+  color: #ffd3d3;
+  border-color: var(--emergency-negative);
+}
+
+.emergency-button.is-alert {
+  background: #2b240b;
+  color: #ffe6a6;
+  border-color: var(--emergency-alert);
+}
+
+.emergency-button.is-positive {
+  background: #0b1b0b;
+  color: #d6ffd6;
+  border-color: var(--emergency-positive);
+}
+
+.emergency-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(0.7);
+}
+
+.emergency-panel.is-unlocked .emergency-unlock {
+  background: var(--emergency-positive);
+  border-color: var(--emergency-positive);
 }
 
 .column {

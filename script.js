@@ -61,12 +61,40 @@ const judgeImageLayer = document.querySelector(".judge-image-layer");
 const judgeImage = document.querySelector(".judge-image");
 const imageAnchors = document.querySelectorAll("[data-anchor]");
 const hotspotButtons = document.querySelectorAll("[data-hotspot]");
+const emergencyPanel = document.querySelector(".emergency-panel");
+const emergencyUnlockButton = document.getElementById("emergency-unlock");
+const emergencyButtons = document.querySelectorAll(
+  "[data-emergency-screen], [data-emergency-sound]"
+);
 
 const screenImages = {
   judge: "hantei.png",
   no: "hantei1.png",
   yes: "hantei2.png",
 };
+
+const preloadedImages = new Map();
+
+const preloadAssets = () => {
+  Object.values(audioMap).forEach((audio) => {
+    audio.preload = "auto";
+    audio.load();
+  });
+
+  Object.values(screenImages).forEach((src) => {
+    if (preloadedImages.has(src)) {
+      return;
+    }
+    const image = new Image();
+    image.src = src;
+    preloadedImages.set(src, image);
+    if (image.decode) {
+      image.decode().catch(() => {});
+    }
+  });
+};
+
+preloadAssets();
 
 const stopCurrentAudio = () => {
   if (!currentAudio) {
@@ -110,8 +138,10 @@ const openOverlay = (button, mode) => {
   setOverlayMode(mode);
   overlay.classList.add("is-visible");
   overlay.setAttribute("aria-hidden", "false");
-  button.classList.add("is-active");
-  currentScreenButton = button;
+  if (button) {
+    button.classList.add("is-active");
+  }
+  currentScreenButton = button || null;
   currentScreen = mode;
   requestAnimationFrame(updateAnchors);
 };
@@ -123,20 +153,23 @@ const closeOverlay = () => {
   currentScreen = null;
 };
 
-const playAudio = (soundKey, trigger) => {
+const playAudio = (soundKey, trigger, options = {}) => {
   const audio = audioMap[soundKey];
   if (!audio) {
     return;
   }
+  const { forceRestart = false } = options;
   const context = ensureAudioContext();
   if (context && context.state === "suspended") {
     context.resume().catch(() => {});
   }
-  if (currentAudio === audio && currentAudioTrigger === trigger) {
+  if (currentAudio === audio) {
+    if (!forceRestart && currentAudioTrigger === trigger) {
+      stopCurrentAudio();
+      return;
+    }
     stopCurrentAudio();
-    return;
-  }
-  if (currentAudio && currentAudio !== audio) {
+  } else if (currentAudio) {
     stopCurrentAudio();
   }
   currentAudio = audio;
@@ -198,6 +231,66 @@ document.querySelectorAll("[data-screen]").forEach((button) => {
     handleScreenButton(button, mode);
   });
 });
+
+document.querySelectorAll("[data-emergency-screen]").forEach((button) => {
+  button.addEventListener("click", () => {
+    if (button.disabled) {
+      return;
+    }
+    const mode = button.dataset.emergencyScreen || "judge";
+    openOverlay(null, mode);
+  });
+});
+
+document.querySelectorAll("[data-emergency-sound]").forEach((button) => {
+  button.addEventListener("click", () => {
+    if (button.disabled) {
+      return;
+    }
+    const soundKey = button.dataset.emergencySound;
+    playAudio(soundKey, button, { forceRestart: true });
+  });
+});
+
+const emergencyState = {
+  lockTimeout: null,
+};
+
+const setEmergencyLocked = (locked) => {
+  if (!emergencyPanel) {
+    return;
+  }
+  if (locked) {
+    if (emergencyState.lockTimeout) {
+      clearTimeout(emergencyState.lockTimeout);
+      emergencyState.lockTimeout = null;
+    }
+  }
+
+  emergencyPanel.classList.toggle("is-unlocked", !locked);
+  emergencyButtons.forEach((button) => {
+    button.disabled = locked;
+    button.setAttribute("aria-disabled", locked ? "true" : "false");
+  });
+};
+
+const startEmergencyUnlock = () => {
+  if (!emergencyPanel) {
+    return;
+  }
+  if (emergencyState.lockTimeout) {
+    clearTimeout(emergencyState.lockTimeout);
+  }
+  setEmergencyLocked(false);
+  emergencyState.lockTimeout = setTimeout(() => {
+    setEmergencyLocked(true);
+  }, 10000);
+};
+
+if (emergencyUnlockButton) {
+  emergencyUnlockButton.addEventListener("click", startEmergencyUnlock);
+  setEmergencyLocked(true);
+}
 
 hiddenCloseButtons.forEach((button) => {
   button.addEventListener("click", () => {
