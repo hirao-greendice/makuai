@@ -1,4 +1,4 @@
-const ASSET_VERSION = "20260108-1";
+const ASSET_VERSION = "20260108-2";
 
 const withCacheBuster = (path) => `${path}?v=${ASSET_VERSION}`;
 
