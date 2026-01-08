@@ -1,7 +1,11 @@
+const ASSET_VERSION = "20260108-1";
+
+const withCacheBuster = (path) => `${path}?v=${ASSET_VERSION}`;
+
 const audioMap = {
-  no: new Audio("no.mp3"),
-  call: new Audio("call.mp3"),
-  yes: new Audio("yes.mp3"),
+  no: new Audio(withCacheBuster("no.mp3")),
+  call: new Audio(withCacheBuster("call.mp3")),
+  yes: new Audio(withCacheBuster("yes.mp3")),
 };
 
 const audioLevels = {
