@@ -153,23 +153,20 @@ const closeOverlay = () => {
   currentScreen = null;
 };
 
-const playAudio = (soundKey, trigger, options = {}) => {
+const playAudio = (soundKey, trigger) => {
   const audio = audioMap[soundKey];
   if (!audio) {
     return;
   }
-  const { forceRestart = false } = options;
   const context = ensureAudioContext();
   if (context && context.state === "suspended") {
     context.resume().catch(() => {});
   }
-  if (currentAudio === audio) {
-    if (!forceRestart && currentAudioTrigger === trigger) {
-      stopCurrentAudio();
-      return;
-    }
+  if (currentAudio === audio && currentAudioTrigger === trigger) {
     stopCurrentAudio();
-  } else if (currentAudio) {
+    return;
+  }
+  if (currentAudio) {
     stopCurrentAudio();
   }
   currentAudio = audio;
@@ -248,7 +245,7 @@ document.querySelectorAll("[data-emergency-sound]").forEach((button) => {
       return;
     }
     const soundKey = button.dataset.emergencySound;
-    playAudio(soundKey, button, { forceRestart: true });
+    playAudio(soundKey, button);
   });
 });
 
@@ -284,7 +281,7 @@ const startEmergencyUnlock = () => {
   setEmergencyLocked(false);
   emergencyState.lockTimeout = setTimeout(() => {
     setEmergencyLocked(true);
-  }, 10000);
+  }, 5000);
 };
 
 if (emergencyUnlockButton) {
