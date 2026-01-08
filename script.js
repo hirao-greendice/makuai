@@ -281,7 +281,7 @@ const startEmergencyUnlock = () => {
   setEmergencyLocked(false);
   emergencyState.lockTimeout = setTimeout(() => {
     setEmergencyLocked(true);
-  }, 5000);
+  }, 10000);
 };
 
 if (emergencyUnlockButton) {
